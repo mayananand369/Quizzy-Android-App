@@ -4,15 +4,15 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,27 +49,11 @@ fun HomeScreen(
 ) {
     val dashboardState by viewModel.dashboardState.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { }, actions = {
-                IconButton(onClick = onNavigateToNotifications) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "Notifications"
-                    )
-                }
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White
-            )
-            )
-        }) { padding ->
+    Box(modifier = Modifier.fillMaxSize()) {
         when (val state = dashboardState) {
             is DashboardState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -78,9 +62,7 @@ fun HomeScreen(
 
             is DashboardState.Error -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -98,7 +80,8 @@ fun HomeScreen(
 
             is DashboardState.Success -> {
                 DashboardContent(
-                    data = state.data, modifier = Modifier.padding(padding)
+                    data = state.data,
+                    onNavigateToNotifications = onNavigateToNotifications
                 )
             }
         }
@@ -107,7 +90,9 @@ fun HomeScreen(
 
 @Composable
 fun DashboardContent(
-    data: StudentDashboard, modifier: Modifier = Modifier
+    data: StudentDashboard,
+    onNavigateToNotifications: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -116,14 +101,16 @@ fun DashboardContent(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
+
+        Spacer(modifier = Modifier.height(15.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween, // Pushes texts to start, icon to end
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Column {
                 Text(
                     text = "Hello ${data.student.name}!",
@@ -143,23 +130,24 @@ fun DashboardContent(
                 )
             }
 
-            IconButton(
-                onClick = {
-                    // Navigate to NotificationsScreen
-                    // onNotificationClick()
-                }) {
-                Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = "Open Notifications",
-                    tint = Color(0xFF1B2124),
-                    modifier = Modifier.size(28.dp)
-                )
-            }
+//            IconButton(onClick = onNavigateToNotifications) {
+//                Icon(
+//                    imageVector = Icons.Default.Notifications,
+//                    contentDescription = "Open Notifications",
+//                    tint = Color(0xFF1B2124),
+//                    modifier = Modifier.size(28.dp)
+//                )
+//            }
+            Image(
+                painter = painterResource(id = R.drawable.notification),
+                contentDescription = "Open Notifications",
+                modifier = Modifier
+                    .clickable(onClick = onNavigateToNotifications),
+            )
         }
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        // Status cards
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,7 +176,6 @@ fun DashboardContent(
             )
         }
 
-        // Today's Summary
         Text(
             text = "Today's Summary",
             fontFamily = FontFamily(Font(R.font.reddit_sans_bold)),
@@ -217,10 +204,14 @@ fun DashboardContent(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "🎯", fontSize = 60.sp, modifier = Modifier.padding(vertical = 8.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.focussed),
+                    contentDescription = "Focussed Icon",
+                    modifier = Modifier
+                        .size(width = 60.dp, height = 62.dp)
+                        .padding(vertical = 0.dp),
+                    contentScale = ContentScale.Fit
                 )
-
                 Text(
                     text = data.todaySummary.mood,
                     fontFamily = FontFamily(Font(R.font.reddit_sans_bold)),
@@ -250,15 +241,21 @@ fun DashboardContent(
                     )
                 ) {
                     Row {
-                        Text(
-                            text = "▶️"
+                        Image(
+                            painter = painterResource(id = R.drawable.play),
+                            contentDescription = "Play Icon",
+                            modifier = Modifier
+                                .size(width = 24.dp, height = 24.dp),
+                            contentScale = ContentScale.Fit
                         )
+
                         Text(
                             text = data.todaySummary.recommendedVideo.actionText,
                             fontFamily = FontFamily(Font(R.font.reddit_sans_semi_bold)),
                             fontWeight = FontWeight.W600,
                             fontSize = 12.sp,
                             lineHeight = 18.sp,
+                            modifier = Modifier.padding(top = 2.dp, start = 2.dp),
                             color = Color(0xffFFFFFF),
                         )
                     }
@@ -268,7 +265,6 @@ fun DashboardContent(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Weekly Overview
         Text(
             text = "Weekly Overview",
             fontFamily = FontFamily(Font(R.font.reddit_sans_bold)),
@@ -280,7 +276,6 @@ fun DashboardContent(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Quiz Streak
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -397,17 +392,17 @@ fun DashboardContent(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 LinearProgressIndicator(
-                    progress = data.weeklyOverview.overallAccuracy.percentage / 100f,
+                    progress = { data.weeklyOverview.overallAccuracy.percentage / 100f },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
                         .clip(RoundedCornerShape(4.dp)),
                     color = Color(0xFFFF6776),
-                    trackColor = Color(0xFFFFE0E3)
+                    trackColor = Color(0xFFFFE0E3),
+                    strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
                 )
             }
 
-            // Performance by Topic
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -504,13 +499,20 @@ fun StatusCard(
                 .fillMaxWidth()
                 .padding(12.dp), horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = when (title) {
-                    "Availability" -> "👤"
-                    "Quiz" -> "📝"
-                    "Accuracy" -> "🎯"
-                    else -> ""
-                }, fontSize = 24.sp, modifier = Modifier.padding(bottom = 4.dp)
+            Image(
+                painter = painterResource(
+                    id = when (title) {
+                        "Availability" -> R.drawable.availability  // Replace with your actual drawable
+                        "Quiz" -> R.drawable.quiz                 // Replace with your actual drawable
+                        "Accuracy" -> R.drawable.accuracy_percent         // Replace with your actual drawable
+                        else -> R.drawable.accuracy_percent
+                    }
+                ),
+                contentDescription = title,
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(bottom = 4.dp),
+                contentScale = ContentScale.Fit
             )
 
             Text(
@@ -557,7 +559,7 @@ fun DayCircle(
         modifier = Modifier
             .size(24.dp)
             .background(
-                color = if (isDone) Color(0xFF22C55D) else Color.White, shape = CircleShape
+                color = if (isDone) Color.Transparent else Color.White, shape = CircleShape
             )
             .border(
                 width = if (!isDone) 2.dp else 0.dp,
@@ -622,7 +624,9 @@ fun HomeScreenPreview() {
             )
         )
 
-        DashboardContent(data = sampleData)
+        DashboardContent(
+            data = sampleData,
+            onNavigateToNotifications = {})
     }
 }
 

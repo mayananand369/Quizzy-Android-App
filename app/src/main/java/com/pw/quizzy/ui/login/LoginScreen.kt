@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,19 +32,16 @@ fun LoginScreen(
     val context = LocalContext.current
     val loginState by viewModel.loginState.collectAsState()
 
-    // State for input fields
     var schoolId by remember { mutableStateOf("") }
     var studentId by remember { mutableStateOf("") }
 
-    // Create Auth0 instance
     val auth0 = remember {
-        Auth0(
+        Auth0.getInstance(
             context.getString(R.string.com_auth0_client_id),
             context.getString(R.string.com_auth0_domain)
         )
     }
 
-    // Handle login state changes
     LaunchedEffect(loginState) {
         if (loginState is LoginState.Success) {
             onLoginSuccess()
@@ -58,7 +54,6 @@ fun LoginScreen(
             .background(Color.Black)
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
-        // Decorative circles in corners
         Box(
             modifier = Modifier
                 .size(width = 46.dp, height = 46.dp)
@@ -95,7 +90,6 @@ fun LoginScreen(
                 .background(Color(0xFFFFF4B0))
         )
 
-        // Bottom left decorative circle
         Image(
             painter = painterResource(id = R.drawable.pw_logo),
             contentDescription = "PW Logo",
@@ -106,7 +100,6 @@ fun LoginScreen(
             contentScale = ContentScale.Fit
         )
 
-        // Bottom right decorative circle
         Image(
             painter = painterResource(id = R.drawable.pi_logo),
             contentDescription = "Pi Logo",
@@ -174,7 +167,6 @@ fun LoginScreen(
                 }
             }
 
-            // Login card - positioned at bottom
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -206,7 +198,6 @@ fun LoginScreen(
                             modifier = Modifier.padding(bottom = 24.dp)
                         )
 
-                        // School ID field
                         OutlinedTextField(
                             value = schoolId,
 
@@ -238,7 +229,6 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Student ID field
                         OutlinedTextField(
                             value = studentId,
                             onValueChange = { studentId = it },
@@ -287,7 +277,6 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(33.dp))
 
-                // Sign in button - curved at bottom, extending full width
                 Button(
                     onClick = {
                         if (schoolId.isNotBlank() && studentId.isNotBlank()) {
@@ -301,7 +290,6 @@ fun LoginScreen(
                         .height(60.dp)
                         .offset(y = 5.dp),
 
-                    // Custom shape: flat top, rounded bottom for Figma-like curve
                     shape = RoundedCornerShape(
                         topStart = 60.dp,
                         topEnd = 60.dp,

@@ -60,8 +60,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Auth0
-    // Use legacy Auth0 SDK (contains com.auth0.android.provider.WebAuthActivity)
-    implementation("com.auth0.android:auth0:2.0.0")
+    implementation(libs.auth0)
 
     // Retrofit for API calls
     implementation(libs.retrofit)

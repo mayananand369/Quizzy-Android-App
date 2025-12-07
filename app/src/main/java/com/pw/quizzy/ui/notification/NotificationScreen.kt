@@ -4,20 +4,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,7 @@ fun NotificationsScreen(
     val context = LocalContext.current
 
     val auth0 = remember {
-        Auth0(
+        Auth0.getInstance(
             context.getString(R.string.com_auth0_client_id),
             context.getString(R.string.com_auth0_domain)
         )
@@ -50,16 +51,27 @@ fun NotificationsScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // Top bar
         TopAppBar(
-            title = { Text("Notifications & Settings") },
+            title = {
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "Notifications & Settings",
+                        fontFamily = FontFamily(Font(R.font.reddit_sans_semi_bold)),
+                        fontWeight = FontWeight.W600,
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp,
+                        color = Color(0xff1B2124)
+                    )
+                }
+            },
+
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back", tint = Color.Black)
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White
+                containerColor = Color.Transparent
             )
         )
 
@@ -68,7 +80,6 @@ fun NotificationsScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Notifications section
             Text(
                 text = "Notifications",
                 fontSize = 18.sp,
@@ -79,27 +90,38 @@ fun NotificationsScreen(
             NotificationItem(
                 title = "Missed quiz in physics in yesterday",
                 time = "2 hours ago",
-                color = Color(0xFFFFE0E0)
+                color = Color(0xFFFFF9F4),
+                accentColor = Color(0xffFFB370)
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
 
             NotificationItem(
                 title = "Badge earned",
                 time = "8 hours ago",
-                color = PurpleLight
+                color = Color(0xffFBF4FF),
+                accentColor = Color(0xff996EB5)
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             NotificationItem(
                 title = "Teacher Note",
                 time = "1 day ago",
-                color = GreenLight
+                color = Color(0xffF2FFF4),
+                accentColor = Color(0xff22C55D)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = "Settings",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily(Font(R.font.reddit_sans_bold)),
+                fontWeight = FontWeight.W700,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                color = Color(0xff1B2124),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
@@ -109,23 +131,26 @@ fun NotificationsScreen(
                 subtitle = "Change active child profile"
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+
             SettingsItem(
                 iconPainter = painterResource(id = R.drawable.language_icon),
                 title = "Language",
                 subtitle = "English"
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             SettingsItem(
                 iconPainter = painterResource(id = R.drawable.logout),
                 title = "Logout",
                 subtitle = "Sign out of your account",
                 onClick = {
-                    // Your logout logic here
                     viewModel.logout(context, auth0, onLogout)
                 }
             )
-
             Spacer(modifier = Modifier.weight(1f))
-
         }
     }
 }
@@ -134,33 +159,57 @@ fun NotificationsScreen(
 fun NotificationItem(
     title: String,
     time: String,
-    color: Color
+    color: Color,
+    accentColor: Color
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = color
-        )
+            .padding(vertical = 0.dp),
+        shape = RectangleShape,
+        colors = CardDefaults.cardColors(containerColor = color),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .height(IntrinsicSize.Min),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = title,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(bottom = 4.dp)
+            Box(
+                modifier = Modifier
+                    .width(4.dp)
+                    .fillMaxHeight()
+                    .background(
+                        color = accentColor,
+                    )
             )
-            Text(
-                text = time,
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = title,
+                    fontFamily = FontFamily(Font(R.font.reddit_sans_semi_bold)),
+                    fontWeight = FontWeight.W600,
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    color = Color(0xff1B2124),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Text(
+                    text = time,
+                    fontFamily = FontFamily(Font(R.font.reddit_sans_regular)),
+                    fontWeight = FontWeight.W400,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp,
+                    color = Color(0xff757575)
+                )
+            }
         }
     }
 }
@@ -175,29 +224,36 @@ fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = onClick != null) { onClick?.invoke() }
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .clickable(enabled = onClick != null) { onClick?.invoke() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = iconPainter,
             contentDescription = title,
             modifier = Modifier
-                .size(28.dp)
-                .padding(end = 16.dp),
-            colorFilter = ColorFilter.tint(Color(0xFF1B2124)) // normal icon color
+                .size(24.dp)
         )
+
+        Spacer(modifier = Modifier.width(10.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                fontFamily = FontFamily(Font(R.font.reddit_sans_semi_bold)),
+                fontWeight = FontWeight.W600,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                color = Color(0xff1B2124),
+                modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
                 text = subtitle,
-                fontSize = 14.sp,
-                color = Color.Gray
+                fontFamily = FontFamily(Font(R.font.reddit_sans_regular)),
+                fontWeight = FontWeight.W400,
+                fontSize = 12.sp,
+                lineHeight = 18.sp,
+                color = Color(0xff757575),
+                modifier = Modifier.padding(bottom = 4.dp)
             )
         }
     }
@@ -225,17 +281,20 @@ fun NotificationItemPreview() {
             NotificationItem(
                 title = "Missed quiz in physics in yesterday",
                 time = "2 hours ago",
-                color = Color(0xFFFFE0E0)
+                color = Color(0xFFFFE0E0),
+                accentColor = Color(0xffFFB370)
             )
             NotificationItem(
                 title = "Badge earned",
                 time = "8 hours ago",
-                color = PurpleLight
+                color = PurpleLight,
+                accentColor = Color(0xff996EB5)
             )
             NotificationItem(
                 title = "Teacher Note",
                 time = "1 day ago",
-                color = GreenLight
+                color = GreenLight,
+                accentColor = Color(0xff22C55D)
             )
         }
     }
