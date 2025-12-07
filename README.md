@@ -147,6 +147,10 @@ Response includes:
 
 APK location: `app/build/outputs/apk/`
 
+##  Download
+
+App download link : [**Download**](https://drive.google.com/file/d/1BvI2o1qJcN9RmSz7FAi3otd7_LyjNX1r/view?usp=sharing)
+
 ##  Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
