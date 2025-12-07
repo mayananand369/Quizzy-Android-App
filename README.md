@@ -22,8 +22,19 @@ A modern Android application for students to track their academic progress, quiz
 - **Minimum SDK**: API 24 (Android 7.0)
 
 ##  Screenshots
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/9209c9d9-0e72-43b0-9dac-89e70216b1a5" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/884df751-55f1-4393-ab90-4fd7bcf32b6f" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/683438be-a7a0-4875-8000-72e198edd4e6" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center">Login Screen</td>
+    <td align="center">Dashboard</td>
+    <td align="center">Notifications</td>
+  </tr>
+</table>
 
-*Add screenshots here after taking them from your app*
 
 ##  Setup Instructions
 
