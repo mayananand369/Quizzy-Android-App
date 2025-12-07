@@ -1,8 +1,8 @@
-# Quizzy - Student Dashboard App 📚
+# Quizzy - Student Dashboard App 
 
 A modern Android application for students to track their academic progress, quiz performance, and learning activities.
 
-## 🎯 Features
+##  Features
 
 - **Auth0 Authentication** - Secure login/logout flow
 - **Student Dashboard** - View performance metrics at a glance
@@ -11,7 +11,7 @@ A modern Android application for students to track their academic progress, quiz
 - **Weekly Overview** - Visual representation of learning progress
 - **Notifications** - Stay updated with quiz reminders and achievements
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Language**: Kotlin
 - **Architecture**: MVVM (Model-View-ViewModel)
@@ -21,11 +21,11 @@ A modern Android application for students to track their academic progress, quiz
 - **Navigation**: Jetpack Navigation Compose
 - **Minimum SDK**: API 24 (Android 7.0)
 
-## 📱 Screenshots
+##  Screenshots
 
 *Add screenshots here after taking them from your app*
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### Prerequisites
 - Android Studio (latest version)
@@ -69,7 +69,7 @@ A modern Android application for students to track their academic progress, quiz
    ./gradlew build
    ```
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 app/src/main/java/com/yourpackage/quizzy/
@@ -85,7 +85,7 @@ app/src/main/java/com/yourpackage/quizzy/
 └── MainActivity.kt     # App entry point with navigation
 ```
 
-## 🎨 Design
+##  Design
 
 - UI designed in Figma
 - Follows Material Design 3 guidelines
@@ -105,14 +105,14 @@ Response includes:
 - Weekly overview (quiz streak, topic performance)
 - Today's summary and recommendations
 
-## 🔐 Authentication Flow
+##  Authentication Flow
 
 1. User enters School ID and Student ID
 2. Auth0 authentication initiated
 3. On success → Navigate to Dashboard
 4. Logout → Clear session and return to Login
 
-## 🏗️ Architecture
+##  Architecture
 
 **MVVM Pattern:**
 - **Model**: Data classes and repository for business logic
@@ -124,7 +124,7 @@ Response includes:
 - Easy testing and maintenance
 - Reactive UI updates with StateFlow
 
-## 📦 Building APK
+##  Building APK
 
 ```bash
 # Debug APK
@@ -136,21 +136,21 @@ Response includes:
 
 APK location: `app/build/outputs/apk/`
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+##  License
 
 This project was created as an assignment submission.
 
-## 👤 Author
+##  Author
 
 **Mayan Anand**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- GitHub: [@mayananand369](https://github.com/mayananand369)
+- LinkedIn: [Mayan Anand](https://linkedin.com/in/mayan-anand)
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Assignment provided by [Company Name]
 - Auth0 for authentication services
